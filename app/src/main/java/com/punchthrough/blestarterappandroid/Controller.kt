@@ -47,12 +47,12 @@ class Controller : AppCompatActivity() {
 
         val wheelJoystick = findViewById<JoystickView>(R.id.wheelJoystick)
         wheelJoystick.onMoveListener = { angle, strength ->
-            sendJoystickPosition(angle, strength, "wheelJoystick")
+            sendJoystickPosition(angle, strength, "wJ")
         }
 
         val needleJoystick = findViewById<JoystickView>(R.id.needleJoystick)
         needleJoystick.onMoveListener = { angle, strength ->
-            sendJoystickPosition(angle, strength, "needleJoystick")
+            sendJoystickPosition(angle, strength, "nJ")
         }
     }
 
@@ -60,8 +60,8 @@ class Controller : AppCompatActivity() {
         val rad = Math.toRadians(angle.toDouble())
         val nx = cos(rad) * strength / 100.0
         val ny = -sin(rad) * strength / 100.0
-        val bx = ((nx + 1.0) * 127.5).toInt().coerceIn(0, 255)
-        val by = ((ny + 1.0) * 127.5).toInt().coerceIn(0, 255)
+        val bx = (((nx + 1.0) * 127.5).toInt().coerceIn(0, 255) - 127) * -1
+        val by = (((ny + 1.0) * 127.5).toInt().coerceIn(0, 255) - 127) * -1
         sendToArduino("$joycon,$bx,$by\n")
     }
 
