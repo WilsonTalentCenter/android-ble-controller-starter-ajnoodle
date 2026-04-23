@@ -84,24 +84,54 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("blorp");
   // print the string when a newline arrives:
   if (stringComplete) {
-    Serial.println(inputString);
     if(inputString.startsWith("wJ")){  //change to be if string starts with wJ  wJ,127,50\n
       //split the string into x and y values.   .split(",")  equivalent
       starterStringJoystick = inputString.substring(0,inputString.indexOf(","));
-      inputString = inputString.substring(inputString.indexOf(","),inputString.length());
+      inputString = inputString.substring(inputString.indexOf(",")+1,inputString.length());
+      Serial.println("beforsfhdfghex "+inputString);
 
-       starterStringJoystick = inputString.substring(0,inputString.indexOf(","));
-      xStringJoyStick = xStringJoyStick.substring(inputString.indexOf(","),inputString.length());
+       xStringJoyStick = inputString.substring(0,inputString.indexOf(","));
+      inputString = inputString.substring(inputString.indexOf(",")+1,inputString.length());
+      Serial.println(inputString + "index " + inputString.indexOf(","));
 
-      starterStringJoystick = inputString.substring(0,inputString.indexOf("/n"));
-      yStringJoyStick = yStringJoyStick.substring(inputString.indexOf(","),inputString.length());
+      yStringJoyStick = inputString.substring(0,inputString.indexOf("/n"));
 
     int xval = xStringJoyStick.toInt();
     int yval = yStringJoyStick.toInt();
 
+    Serial.print("values: ");
+    Serial.print(xval);
+    Serial.print(" , ");
+    Serial.println(yval);
+    if(yval >0){
+      digitalWrite(RIGHT_IN1,HIGH);
+      digitalWrite(RIGHT_IN2,LOW);
+      analogWrite(RIGHT_SPEED, abs((xval*2)-1));
+
+      digitalWrite(LEFT_IN1,HIGH);
+      digitalWrite(LEFT_IN2,LOW);
+      analogWrite(LEFT_SPEED, abs(xval*2)-1);
+    }else if(yval <0){
+      digitalWrite(RIGHT_IN1,LOW);
+      digitalWrite(RIGHT_IN2,HIGH);
+      analogWrite(RIGHT_SPEED, abs((xval*2)-1));
+
+      digitalWrite(LEFT_IN1,LOW);
+      digitalWrite(LEFT_IN2,HIGH);
+      analogWrite(LEFT_SPEED, abs(xval*2)-1);
+    }else{
+      digitalWrite(RIGHT_IN1,LOW);
+      digitalWrite(RIGHT_IN2,LOW);
+      analogWrite(RIGHT_SPEED, 0);
+
+      digitalWrite(LEFT_IN1,LOW);
+      digitalWrite(LEFT_IN2,LOW);
+      analogWrite(LEFT_SPEED, 0);
+    }
+
+    if(xval >0){
       digitalWrite(FRONT_IN1,HIGH);
       digitalWrite(FRONT_IN2,LOW);
       analogWrite(FRONT_SPEED, abs((xval*2)-1));
@@ -109,16 +139,27 @@ void loop() {
       digitalWrite(BACK_IN1,HIGH);
       digitalWrite(BACK_IN2,LOW);
       analogWrite(BACK_SPEED, abs(xval*2)-1);
+    }else if(xval <0){
+      digitalWrite(FRONT_IN1,LOW);
+      digitalWrite(FRONT_IN2,HIGH);
+      analogWrite(FRONT_SPEED, abs((xval*2)-1));
 
-      digitalWrite(RIGHT_IN1,HIGH);
-      digitalWrite(RIGHT_IN2, LOW);
-      analogWrite(RIGHT_SPEED, abs(yval*2)-1);
+      digitalWrite(BACK_IN1,LOW);
+      digitalWrite(BACK_IN2,HIGH);
+      analogWrite(BACK_SPEED, abs(xval*2)-1);
+    }else{
+      digitalWrite(FRONT_IN1,LOW);
+      digitalWrite(FRONT_IN2,LOW);
+      analogWrite(FRONT_SPEED, 0);
 
-      digitalWrite(LEFT_IN1,HIGH);
-      digitalWrite(LEFT_IN2, LOW);
-      analogWrite(LEFT_SPEED, abs(yval*2)-1);
-
-
+      digitalWrite(BACK_IN1,LOW);
+      digitalWrite(BACK_IN2,LOW);
+      analogWrite(BACK_SPEED, 0);
+    }
+// Serial.print("x: ");
+// Serial.print(xStringJoyStick);
+// Serial.print(" y: ");
+// Serial.println( yStringJoyStick);
     } 
     
     // clear the string:
@@ -133,6 +174,7 @@ void loop() {
   delay response. Multiple bytes of data may be available.
 */
 void serialEvent1() {
+//Serial.println("hg");
   while (Serial1.available()) {
     // get the new byte:
     char inChar = (char)Serial1.read();
