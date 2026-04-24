@@ -108,19 +108,19 @@ void loop() {
     if(yval >0){
       digitalWrite(RIGHT_IN1,HIGH);
       digitalWrite(RIGHT_IN2,LOW);
-      analogWrite(RIGHT_SPEED, abs((xval*2)-1));
+      analogWrite(RIGHT_SPEED, abs((yval*2)-1));
 
       digitalWrite(LEFT_IN1,HIGH);
       digitalWrite(LEFT_IN2,LOW);
-      analogWrite(LEFT_SPEED, abs(xval*2)-1);
+      analogWrite(LEFT_SPEED, abs(yval*2)-1);
     }else if(yval <0){
       digitalWrite(RIGHT_IN1,LOW);
       digitalWrite(RIGHT_IN2,HIGH);
-      analogWrite(RIGHT_SPEED, abs((xval*2)-1));
+      analogWrite(RIGHT_SPEED, abs((yval*2)-1));
 
       digitalWrite(LEFT_IN1,LOW);
       digitalWrite(LEFT_IN2,HIGH);
-      analogWrite(LEFT_SPEED, abs(xval*2)-1);
+      analogWrite(LEFT_SPEED, abs(yval*2)-1);
     }else{
       digitalWrite(RIGHT_IN1,LOW);
       digitalWrite(RIGHT_IN2,LOW);
