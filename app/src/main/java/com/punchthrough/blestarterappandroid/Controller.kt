@@ -62,7 +62,7 @@ class Controller : AppCompatActivity() {
         val ny = -sin(rad) * strength / 100.0
         val bx = (((nx + 1.0) * 127.5).toInt().coerceIn(0, 255) - 127) * -1
         val by = (((ny + 1.0) * 127.5).toInt().coerceIn(0, 255) - 127) * -1
-        sendToArduino("$joycon,$bx~$by\n")
+        sendToArduino("$joycon,$bx,$by\n")
     }
 
     private fun sendToArduino(command: String) {
