@@ -18,6 +18,12 @@
 
   https://docs.arduino.cc/built-in-examples/communication/SerialEvent/
 */
+#include <Servo.h>
+
+Servo myservo;  // create Servo object to control a servo
+// twelve Servo objects can be created on most boards
+
+int pos = 0;
 
 const int FRONT_IN1 = 34;
 const int FRONT_IN2 = 36;
@@ -43,6 +49,8 @@ String yStringJoyStick ="";
 bool stringComplete = false;  // whether the string is complete
 
 void setup() {
+   myservo.attach(2);
+
   // initialize serial:
   Serial1.begin(9600);
   Serial.begin(9600);
@@ -157,6 +165,21 @@ void loop() {
       analogWrite(BACK_SPEED, 0);
     }
 
+    }else if(inputString.startsWith("nJ")){ 
+      Serial.println(inputString);
+       //change to be if string starts with wJ  wJ,127,50\n
+     
+      //split the string into x and y values.   .split(",")  equivalent
+      starterStringJoystick = inputString.substring(0,inputString.indexOf(","));
+      inputString = inputString.substring(inputString.indexOf(",")+1,inputString.length());
+
+
+       xStringJoyStick = inputString.substring(0,inputString.indexOf(","));
+      inputString = inputString.substring(inputString.indexOf(",")+1,inputString.length());
+  
+    int xval = xStringJoyStick.toInt();
+  myservo.write(xval);              // tell servo to go to position in variable 'pos'
+     
     } 
     
     // clear the string:
