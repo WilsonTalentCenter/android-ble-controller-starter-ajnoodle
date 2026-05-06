@@ -26,11 +26,11 @@ Servo myservo;  // create Servo object to control a servo
 int pos = 0;
 
 const int FRONT_IN1 = 34;
-const int FRONT_IN2 = 36;
+const int FRONT_IN2 = 23;
 const int FRONT_SPEED = 7; //enable
 
 const int BACK_IN1 = 22;
-const int BACK_IN2 = 23;
+const int BACK_IN2 = 36;
 const int BACK_SPEED = 6;
 
 const int RIGHT_IN1 = 41; //blue
@@ -92,6 +92,7 @@ void setup() {
 }
 
 void loop() {
+  
   // print the string when a newline arrives:
   if (stringComplete) {
     if(inputString.startsWith("wJ")){ 
@@ -178,9 +179,27 @@ void loop() {
       inputString = inputString.substring(inputString.indexOf(",")+1,inputString.length());
   
     int xval = xStringJoyStick.toInt();
-  myservo.write(xval);              // tell servo to go to position in variable 'pos'
+  myservo.write(pos + xval);              // tell servo to go to position in variable 'pos'
      
-    } 
+    } else if (inputString.startsWith("bL")){
+  digitalWrite(FRONT_IN1,LOW);
+      digitalWrite(FRONT_IN2,HIGH);
+      analogWrite(FRONT_SPEED, abs(-100*2)-1);
+
+      digitalWrite(BACK_IN1,HIGH);
+      digitalWrite(BACK_IN2,LOW);
+      analogWrite(BACK_SPEED, abs(100*2)-1);
+
+    } else if (inputString.startsWith("bR")){
+ Serial.println(inputString);
+  digitalWrite(FRONT_IN1,HIGH);
+      digitalWrite(FRONT_IN2,LOW);
+      analogWrite(FRONT_SPEED, abs(-100*2)-1);
+
+      digitalWrite(BACK_IN1,LOW);
+      digitalWrite(BACK_IN2,HIGH);
+      analogWrite(BACK_SPEED, abs(100*2)-1);
+    }
     
     // clear the string:
     inputString = "";

@@ -37,7 +37,8 @@ class Controller : AppCompatActivity() {
 //                    sendToArduino("1")
 //                    true
 //                }
-//                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+//                MotionEvent.ACTION_UP, MotionEvent.ACTIO
+//                _CANCEL -> {
 //                    sendToArduino("0")
 //                    true
 //                }
@@ -53,6 +54,16 @@ class Controller : AppCompatActivity() {
         val needleJoystick = findViewById<JoystickView>(R.id.needleJoystick)
         needleJoystick.onMoveListener = { angle, strength ->
             sendJoystickPosition(angle, strength, "nJ")
+        }
+
+        val leftButton = findViewById<Button>(R.id.leftButton)
+        leftButton.setOnClickListener {
+            sendToArduino("bL\n")
+        }
+
+        val rightButton = findViewById<Button>(R.id.rightButton)
+        rightButton.setOnClickListener {
+            sendToArduino("bR\n")
         }
     }
 
